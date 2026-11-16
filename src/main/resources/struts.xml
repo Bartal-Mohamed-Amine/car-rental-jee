@@ -102,4 +102,58 @@
             <result name="success">/WEB-INF/jsp/vehicules.jsp</result>
         </action>
     </package>
+
+    <!-- Admin namespace: restricted to ADMIN role -->
+    <package name="admin" extends="car-rental-default" namespace="/admin">
+        <interceptors>
+            <interceptor-stack name="adminStack">
+                <interceptor-ref name="auth"/>
+                <interceptor-ref name="role">
+                    <param name="allowedRoles">ADMIN</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="adminStack"/>
+
+        <action name="home">
+            <result>/WEB-INF/jsp/admin/home.jsp</result>
+        </action>
+    </package>
+
+    <!-- Agent namespace: restricted to AGENT and ADMIN roles -->
+    <package name="agent" extends="car-rental-default" namespace="/agent">
+        <interceptors>
+            <interceptor-stack name="agentStack">
+                <interceptor-ref name="auth"/>
+                <interceptor-ref name="role">
+                    <param name="allowedRoles">AGENT,ADMIN</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="agentStack"/>
+
+        <action name="home">
+            <result>/WEB-INF/jsp/agent/home.jsp</result>
+        </action>
+    </package>
+
+    <!-- Client namespace: restricted to CLIENT role -->
+    <package name="client" extends="car-rental-default" namespace="/client">
+        <interceptors>
+            <interceptor-stack name="clientStack">
+                <interceptor-ref name="auth"/>
+                <interceptor-ref name="role">
+                    <param name="allowedRoles">CLIENT,ADMIN</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="clientStack"/>
+
+        <action name="home">
+            <result>/WEB-INF/jsp/client/home.jsp</result>
+        </action>
+    </package>
 </struts>

@@ -1,4 +1,4 @@
-package ma.uir.awd.metier.impl;
+package ma.uir.awd.metier.ml;
 
 import ma.uir.awd.metier.IRiskMetier;
 import ma.uir.awd.model.ModelMetrics;
@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 
 /**
  * Skeleton implementation of IRiskMetier (R15, R18).
+ * Lives in ma.uir.awd.metier.ml package.
  * Currently returns ModelStatus.NOT_TRAINED until the full ML training pipeline
  * is executed. Includes the model persistence infrastructure for saving and loading
  * serialized models to/from the external model directory.

@@ -75,9 +75,6 @@ public class Vehicule {
     @OneToMany(mappedBy = "vehicule", fetch = FetchType.LAZY)
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "vehicule", fetch = FetchType.LAZY)
-    private List<Location> locations = new ArrayList<>();
-
     @OneToMany(mappedBy = "vehicule", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Maintenance> maintenances = new ArrayList<>();
 
@@ -101,7 +98,6 @@ public class Vehicule {
     public String        getPhoto()           { return photo; }
     public StatutVehicule getStatut()         { return statut; }
     public List<Reservation>  getReservations()  { return reservations; }
-    public List<Location>     getLocations()     { return locations; }
     public List<Maintenance>  getMaintenances()  { return maintenances; }
 
     // Setters
@@ -118,7 +114,6 @@ public class Vehicule {
     public void setPhoto(String photo)                      { this.photo = photo; }
     public void setStatut(StatutVehicule statut)            { this.statut = statut; }
     public void setReservations(List<Reservation> r)        { this.reservations = r; }
-    public void setLocations(List<Location> l)              { this.locations = l; }
     public void setMaintenances(List<Maintenance> m)        { this.maintenances = m; }
 
     @Override

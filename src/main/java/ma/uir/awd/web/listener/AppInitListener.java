@@ -4,6 +4,7 @@ import ma.uir.awd.dao.*;
 import ma.uir.awd.dao.impl.*;
 import ma.uir.awd.metier.*;
 import ma.uir.awd.metier.impl.*;
+import ma.uir.awd.metier.ml.RiskMetierImpl;
 import ma.uir.awd.web.util.AppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

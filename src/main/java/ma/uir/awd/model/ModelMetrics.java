@@ -1,6 +1,7 @@
 package ma.uir.awd.model;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -35,23 +36,23 @@ public class ModelMetrics {
 
     // Model metrics
     @Column(precision = 6, scale = 4)
-    private Double accuracy;
+    private BigDecimal accuracy;
 
     @Column(name = "precision_score", precision = 6, scale = 4)
-    private Double precision;
+    private BigDecimal precision;
 
     @Column(precision = 6, scale = 4)
-    private Double recall;
+    private BigDecimal recall;
 
     @Column(name = "f1_score", precision = 6, scale = 4)
-    private Double f1Score;
+    private BigDecimal f1Score;
 
     // Baseline metrics for comparison (R17)
     @Column(name = "baseline_majority_accuracy", precision = 6, scale = 4)
-    private Double baselineMajorityAccuracy;
+    private BigDecimal baselineMajorityAccuracy;
 
     @Column(name = "baseline_rule_f1", precision = 6, scale = 4)
-    private Double baselineRuleF1;
+    private BigDecimal baselineRuleF1;
 
     @Column(name = "notes", length = 500)
     private String notes;
@@ -71,27 +72,27 @@ public class ModelMetrics {
     public String       getModelFile()                { return modelFile; }
     public int          getTrainSize()                { return trainSize; }
     public int          getTestSize()                 { return testSize; }
-    public Double       getAccuracy()                 { return accuracy; }
-    public Double       getPrecision()                { return precision; }
-    public Double       getRecall()                   { return recall; }
-    public Double       getF1Score()                  { return f1Score; }
-    public Double       getBaselineMajorityAccuracy() { return baselineMajorityAccuracy; }
-    public Double       getBaselineRuleF1()           { return baselineRuleF1; }
+    public BigDecimal   getAccuracy()                 { return accuracy; }
+    public BigDecimal   getPrecision()                { return precision; }
+    public BigDecimal   getRecall()                   { return recall; }
+    public BigDecimal   getF1Score()                  { return f1Score; }
+    public BigDecimal   getBaselineMajorityAccuracy() { return baselineMajorityAccuracy; }
+    public BigDecimal   getBaselineRuleF1()           { return baselineRuleF1; }
     public String       getNotes()                    { return notes; }
 
-    public void setId(Long id)                                    { this.id = id; }
-    public void setTrainedAt(LocalDateTime trainedAt)             { this.trainedAt = trainedAt; }
-    public void setModelType(String modelType)                    { this.modelType = modelType; }
-    public void setModelFile(String modelFile)                    { this.modelFile = modelFile; }
-    public void setTrainSize(int trainSize)                       { this.trainSize = trainSize; }
-    public void setTestSize(int testSize)                         { this.testSize = testSize; }
-    public void setAccuracy(Double accuracy)                      { this.accuracy = accuracy; }
-    public void setPrecision(Double precision)                    { this.precision = precision; }
-    public void setRecall(Double recall)                          { this.recall = recall; }
-    public void setF1Score(Double f1Score)                        { this.f1Score = f1Score; }
-    public void setBaselineMajorityAccuracy(Double b)             { this.baselineMajorityAccuracy = b; }
-    public void setBaselineRuleF1(Double b)                       { this.baselineRuleF1 = b; }
-    public void setNotes(String notes)                            { this.notes = notes; }
+    public void setId(Long id)                                        { this.id = id; }
+    public void setTrainedAt(LocalDateTime trainedAt)                 { this.trainedAt = trainedAt; }
+    public void setModelType(String modelType)                        { this.modelType = modelType; }
+    public void setModelFile(String modelFile)                        { this.modelFile = modelFile; }
+    public void setTrainSize(int trainSize)                           { this.trainSize = trainSize; }
+    public void setTestSize(int testSize)                             { this.testSize = testSize; }
+    public void setAccuracy(BigDecimal accuracy)                      { this.accuracy = accuracy; }
+    public void setPrecision(BigDecimal precision)                    { this.precision = precision; }
+    public void setRecall(BigDecimal recall)                          { this.recall = recall; }
+    public void setF1Score(BigDecimal f1Score)                        { this.f1Score = f1Score; }
+    public void setBaselineMajorityAccuracy(BigDecimal b)             { this.baselineMajorityAccuracy = b; }
+    public void setBaselineRuleF1(BigDecimal b)                       { this.baselineRuleF1 = b; }
+    public void setNotes(String notes)                                { this.notes = notes; }
 
     @Override
     public boolean equals(Object o) {

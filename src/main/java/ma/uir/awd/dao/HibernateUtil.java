@@ -40,6 +40,18 @@ public final class HibernateUtil {
         try {
             Configuration cfg = new Configuration().configure("hibernate.cfg.xml");
 
+            // Explicitly register annotated entity classes to ensure mapping
+            cfg.addAnnotatedClass(ma.uir.awd.model.Utilisateur.class);
+            cfg.addAnnotatedClass(ma.uir.awd.model.Categorie.class);
+            cfg.addAnnotatedClass(ma.uir.awd.model.Vehicule.class);
+            cfg.addAnnotatedClass(ma.uir.awd.model.Equipement.class);
+            cfg.addAnnotatedClass(ma.uir.awd.model.Reservation.class);
+            cfg.addAnnotatedClass(ma.uir.awd.model.Location.class);
+            cfg.addAnnotatedClass(ma.uir.awd.model.Facture.class);
+            cfg.addAnnotatedClass(ma.uir.awd.model.Maintenance.class);
+            cfg.addAnnotatedClass(ma.uir.awd.model.Parametres.class);
+            cfg.addAnnotatedClass(ma.uir.awd.model.ModelMetrics.class);
+
             // Override DB credentials from app.properties or environment variables.
             // Environment variables (set in docker-compose.yml) take priority.
             Properties appProps = loadAppProperties();
