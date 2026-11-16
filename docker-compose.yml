@@ -1,0 +1,59 @@
+services:
+
+  mysql:
+    image: mysql:8
+    container_name: car_rental_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # Import schema and seed data on first start
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./sql/dev-seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    command: >
+      --character-set-server=utf8mb4
+      --collation-server=utf8mb4_unicode_ci
+      --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  tomcat:
+    image: tomcat:9-jdk17
+    container_name: car_rental_tomcat
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      # Deploy the WAR — run 'mvn package' first
+      - ./target/car-rental.war:/usr/local/tomcat/webapps/car-rental.war:ro
+      # Upload directory outside the WAR (file uploads, ML model)
+      - car_rental_uploads:/opt/car-rental/uploads
+      - car_rental_models:/opt/car-rental/models
+    environment:
+      # App config overrides for the container
+      APP_DB_URL: jdbc:mysql://mysql:3306/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      APP_DB_USER: ${MYSQL_USER}
+      APP_DB_PASSWORD: ${MYSQL_PASSWORD}
+      APP_UPLOAD_DIR: /opt/car-rental/uploads
+      APP_MODEL_DIR: /opt/car-rental/models
+      JAVA_OPTS: "-Xms256m -Xmx512m"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
+    name: car_rental_mysql_data
+  car_rental_uploads:
+    name: car_rental_uploads
+  car_rental_models:
+    name: car_rental_models

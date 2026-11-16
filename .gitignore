@@ -1,0 +1,37 @@
+# Generated build output
+target/
+
+# Environment variables — NEVER commit this file
+.env
+
+# IDE files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Uploaded vehicle photos (stored outside WAR)
+uploads/
+
+# ML model files
+models/
+
+# Log files
+*.log
+logs/
+
+# Maven wrapper (optional)
+# .mvn/wrapper/maven-wrapper.jar
+
+# Agent skill cache
+.agent/
+
+# Temp / crash dumps
+hs_err_pid*.log

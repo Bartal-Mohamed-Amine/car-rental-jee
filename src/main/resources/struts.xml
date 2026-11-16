@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 6.0//EN"
+        "https://struts.apache.org/dtds/struts-6.0.dtd">
+
+<struts>
+    <!-- Security and Production Settings (SKILL.md §9, §11) -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <constant name="struts.devMode" value="false"/>
+    <constant name="struts.ui.theme" value="simple"/>
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+
+    <package name="car-rental-default" extends="struts-default" abstract="true">
+        <interceptors>
+            <interceptor name="auth" class="ma.uir.awd.web.interceptor.AuthInterceptor"/>
+            <interceptor name="role" class="ma.uir.awd.web.interceptor.RoleInterceptor"/>
+
+            <!-- Stack for authenticated routes with optional role verification -->
+            <interceptor-stack name="authStack">
+                <interceptor-ref name="auth"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+
+            <!-- Stack for authenticated state-changing forms (includes CSRF token check) -->
+            <interceptor-stack name="authPostStack">
+                <interceptor-ref name="auth"/>
+                <interceptor-ref name="token"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+
+            <!-- Stack for public POST forms (e.g. login, register with CSRF protection) -->
+            <interceptor-stack name="publicPostStack">
+                <interceptor-ref name="token"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="defaultStack"/>
+
+        <global-results>
+            <result name="login" type="redirectAction">
+                <param name="actionName">loginForm</param>
+                <param name="namespace">/</param>
+            </result>
+            <result name="unauthorized">/WEB-INF/jsp/error.jsp</result>
+            <result name="error">/WEB-INF/jsp/error.jsp</result>
+            <result name="invalid.token">/WEB-INF/jsp/error.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+    </package>
+
+    <!-- Public / Authentication actions -->
+    <package name="public" extends="car-rental-default" namespace="/">
+        <default-action-ref name="index"/>
+
+        <action name="index">
+            <result type="redirectAction">home</result>
+        </action>
+
+        <action name="loginForm">
+            <result>/WEB-INF/jsp/login.jsp</result>
+        </action>
+
+        <action name="login" class="ma.uir.awd.web.action.LoginAction">
+            <interceptor-ref name="publicPostStack"/>
+            <result name="success" type="redirectAction">home</result>
+            <result name="input">/WEB-INF/jsp/login.jsp</result>
+            <result name="invalid.token">/WEB-INF/jsp/login.jsp</result>
+        </action>
+
+        <action name="registerForm">
+            <result>/WEB-INF/jsp/register.jsp</result>
+        </action>
+
+        <action name="register" class="ma.uir.awd.web.action.RegisterAction">
+            <interceptor-ref name="publicPostStack"/>
+            <result name="success" type="redirectAction">loginForm</result>
+            <result name="input">/WEB-INF/jsp/register.jsp</result>
+            <result name="invalid.token">/WEB-INF/jsp/register.jsp</result>
+        </action>
+
+        <action name="logout" class="ma.uir.awd.web.action.LogoutAction">
+            <result name="success" type="redirectAction">loginForm</result>
+        </action>
+    </package>
+
+    <!-- Protected routes (requires login) -->
+    <package name="protected" extends="car-rental-default" namespace="/">
+        <default-interceptor-ref name="authStack"/>
+
+        <action name="home" class="ma.uir.awd.web.action.HomeAction">
+            <result name="admin">/WEB-INF/jsp/admin/home.jsp</result>
+            <result name="agent">/WEB-INF/jsp/agent/home.jsp</result>
+            <result name="client">/WEB-INF/jsp/client/home.jsp</result>
+        </action>
+
+        <!-- Vertical slice: Vehicle catalogue available to all 3 roles -->
+        <action name="vehicules" class="ma.uir.awd.web.action.VehiculeAction">
+            <result name="success">/WEB-INF/jsp/vehicules.jsp</result>
+        </action>
+    </package>
+</struts>

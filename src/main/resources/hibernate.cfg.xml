@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Dialect for MySQL 8 -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+
+        <!-- Thread-bound session for ITransactionRunner (AD-02) -->
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <!-- Schema validation against entities (AD-07) -->
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+        <!-- HikariCP Connection Pool -->
+        <property name="hibernate.connection.provider_class">org.hibernate.hikaricp.internal.HikariCPConnectionProvider</property>
+        <property name="hibernate.hikari.minimumIdle">5</property>
+        <property name="hibernate.hikari.maximumPoolSize">20</property>
+        <property name="hibernate.hikari.idleTimeout">30000</property>
+
+        <!-- Formatting and logging -->
+        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.format_sql">false</property>
+
+        <!-- Entity mappings -->
+        <mapping class="ma.uir.awd.model.Utilisateur"/>
+        <mapping class="ma.uir.awd.model.Categorie"/>
+        <mapping class="ma.uir.awd.model.Vehicule"/>
+        <mapping class="ma.uir.awd.model.Equipement"/>
+        <mapping class="ma.uir.awd.model.Reservation"/>
+        <mapping class="ma.uir.awd.model.Location"/>
+        <mapping class="ma.uir.awd.model.Facture"/>
+        <mapping class="ma.uir.awd.model.Maintenance"/>
+        <mapping class="ma.uir.awd.model.Parametres"/>
+        <mapping class="ma.uir.awd.model.ModelMetrics"/>
+    </session-factory>
+</hibernate-configuration>
