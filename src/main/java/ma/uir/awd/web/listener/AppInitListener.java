@@ -52,16 +52,20 @@ public class AppInitListener implements ServletContextListener {
         IUtilisateurDao utilisateurDao = new UtilisateurDaoImpl();
         IVehiculeDao vehiculeDao = new VehiculeDaoImpl();
         ICategorieDao categorieDao = new CategorieDaoImpl();
+        IEquipementDao equipementDao = new EquipementDaoImpl();
+        IReservationDao reservationDao = new ReservationDaoImpl();
         IParametresDao parametresDao = new ParametresDaoImpl();
 
         // 4. Assemble Business layer
         IAuthMetier authMetier = new AuthMetierImpl(utilisateurDao, tx);
         IVehiculeMetier vehiculeMetier = new VehiculeMetierImpl(vehiculeDao, tx);
+        IReservationMetier reservationMetier = new ReservationMetierImpl(reservationDao, vehiculeDao, equipementDao, tx);
         IRiskMetier riskMetier = new RiskMetierImpl(modelDir);
 
         // 5. Register in AppContext
         AppContext.register(IAuthMetier.class, authMetier);
         AppContext.register(IVehiculeMetier.class, vehiculeMetier);
+        AppContext.register(IReservationMetier.class, reservationMetier);
         AppContext.register(IRiskMetier.class, riskMetier);
 
         log.info("Car Rental Application successfully initialized.");
